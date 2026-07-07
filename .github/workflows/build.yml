@@ -8,11 +8,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Java 21/25
+      - name: Set up Java 25
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21' # Set to 25 if your 26.2 setup explicitly forces Java 25
+          java-version: '25'
 
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v3
