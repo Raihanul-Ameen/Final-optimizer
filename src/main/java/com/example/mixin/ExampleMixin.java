@@ -1,7 +1,8 @@
-package com.example.mixin; // <-- KEEP WHATEVER YOUR TEMPLATE ALREADY HAS HERE!
+package com.example.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
@@ -15,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ExampleMixin {
 
     @Shadow public ClientPlayerInteractionManager interactionManager;
-    @Shadow private int itemUseCooldown;
+    @Shadow private int itemUseCooldown; 
 
     @Inject(at = @At("HEAD"), method = "tick")
     private void onTick(CallbackInfo ci) {
@@ -33,10 +34,11 @@ public class ExampleMixin {
         }
 
         // 2. GHOST CRYSTAL REMOVER (Cleans client lag when YOU break a crystal)
-        if (client.targetedEntity instanceof EndCrystalEntity crystal) {
-            // If you have already broken it, clear the dead model immediately
+        if (client.targetedEntity instanceof EndCrystalEntity) {
+            EndCrystalEntity crystal = (EndCrystalEntity) client.targetedEntity;
+            // If you have already broken it, clear the dead model immediately using 26.2 removal flags
             if (!crystal.isAlive() || crystal.getHealth() <= 0) {
-                crystal.discard();
+                crystal.remove(Entity.RemovalReason.DISCARDED);
             }
         }
     }
